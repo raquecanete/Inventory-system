@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1C1C1A">
+  <title>Yard Ledger — Construction Supply Inventory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            colors: {
+              concrete: "#E7E5E0",
+              asphalt: "#1C1C1A",
+              hazard: "#F5B700",
+              rebar: "#B5472B",
+              steel: "#5B6B73",
+              safety: "#2F7D4F",
+              blueprint: "#1E3A5F"
+            },
+            fontFamily: {
+              heading: ['"Barlow Condensed"', "sans-serif"],
+              body: ['"IBM Plex Sans"', "sans-serif"],
+              mono: ['"IBM Plex Mono"', "monospace"]
+            },
+            boxShadow: { yard: "4px 4px 0 #1C1C1A" },
+            maxWidth: { "yard": "1600px" }
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>button { min-height: 44px; }</style>
+  <style>
+    * { box-sizing: border-box; }
+    html { background: #E7E5E0; }
+    body { margin: 0; min-height: 100vh; color: #1C1C1A; font-family: "IBM Plex Sans", sans-serif; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    :focus-visible { outline: 2px solid #F5B700; outline-offset: 3px; }
+    .hazard-rule { height: 6px; background: repeating-linear-gradient(135deg,#F5B700 0 8px,#1C1C1A 8px 16px); }
+    .hazard-tag { clip-path: polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%); }
+    .tape-track { position: relative; height: 19px; border: 1px solid #5B6B73; background: repeating-linear-gradient(90deg,transparent 0,transparent calc(10% - 1px),#5B6B73 calc(10% - 1px),#5B6B73 10%); }
+    .tape-fill { position: absolute; inset: 0 auto 0 0; max-width: 100%; transition: width 180ms ease; }
+    .tape-marker { position: absolute; top: -4px; bottom: -4px; width: 2px; background: #1C1C1A; }
+    .blueprint-grid { background-color: #1E3A5F; background-image: linear-gradient(rgba(231,229,224,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(231,229,224,.08) 1px,transparent 1px); background-size: 24px 24px; }
+    .modal-backdrop { background: rgba(28,28,26,.55); }
+    .modal-surface { background-color: #fff; }
+    .drawer-backdrop { background: rgba(28,28,26,.45); }
+    .drawer-panel { transform: translateX(100%); transition: transform 180ms ease; }
+    .drawer-panel.open { transform: translateX(0); }
+    .modal-backdrop, .drawer-backdrop { animation: fade-in 150ms ease both; }
+    .row-flash { animation: row-flash 1s ease; }
+    .toast-in { animation: toast-in 180ms ease both; }
+    @keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
+    @keyframes toast-in { from { transform: translateY(8px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+    @keyframes row-flash { 0%,100% { background-color: transparent } 35% { background-color: rgba(245,183,0,.32) } }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+    @media print {
+      .no-print, aside, header, .mobile-tabs, #toast-region { display: none !important; }
+      body, main { background: white !important; color: black !important; }
+      .print-area { display: block !important; }
+      body.printing-po #app { display: none !important; }
+      body.printing-po #modal-root { position: static !important; display: block !important; }
+      body.printing-po #modal-root > * { position: static !important; display: block !important; padding: 0 !important; background: white !important; }
+      body.printing-po #modal-root [data-panel] { max-height: none !important; overflow: visible !important; border: 0 !important; box-shadow: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" class="absolute h-0 w-0 overflow-hidden">
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m3 7 9-4 9 4v10l-9 4-9-4z"/><path d="m3 7 9 4 9-4M12 11v10"/></symbol>
+    <symbol id="i-move" viewBox="0 0 24 24"><path d="M4 7h15m-4-4 4 4-4 4M20 17H5m4-4-4 4 4 4"/></symbol>
+    <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16"/><path d="M9 5V3h6v2M8 11h8M8 15h8"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2zM16 5a3 3 0 0 1 0 6m2 3a5 5 0 0 1 3 5v1h-4"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 6-7"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V3m-5 5 5-5 5 5M4 17v4h16v-4"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.8 1l-.3 1.9h-2.8l-.3-1.9a8 8 0 0 1-1.8-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.8-1l.3-1.9h2.8l.3 1.9a8 8 0 0 1 1.8 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2z" transform="translate(-1 -1) scale(.96)"/></symbol>
+    <symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4V9h16v9h-2"/><path d="M6 14h12v7H6zM17 11h1"/></symbol>
+  </svg>
+
+  <main id="login-screen" class="min-h-screen bg-concrete px-4 py-8 sm:px-8">
+    <div class="mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl items-center">
+      <div class="grid w-full overflow-hidden border border-asphalt bg-white shadow-yard md:grid-cols-[1.05fr_.95fr]">
+        <section class="blueprint-grid relative flex min-h-[280px] flex-col justify-between overflow-hidden p-7 text-white sm:p-10 md:min-h-[590px]">
+          <div class="relative z-10 flex items-center gap-3">
+            <div class="grid h-12 w-12 place-items-center border-2 border-hazard font-heading text-2xl font-bold text-hazard">YL</div>
+            <div><p class="font-heading text-2xl font-bold uppercase tracking-[.13em]">Yard Ledger</p><p class="font-mono text-[10px] uppercase tracking-[.2em] text-white/75">Supply yard · PH</p></div>
+          </div>
+          <div class="relative z-10 mt-12 max-w-md">
+            <p class="mb-3 font-mono text-xs uppercase tracking-[.2em] text-hazard">Yard office / sign in</p>
+            <h1 class="font-heading text-5xl font-bold uppercase leading-[.95] tracking-wide sm:text-6xl">Know what’s<br>on the rack.</h1>
+            <p class="mt-5 max-w-sm text-sm leading-6 text-white/85">Inventory, site issues, deliveries, and supplier orders — ready at the yard desk.</p>
+          </div>
+          <div class="relative z-10 mt-10">
+            <div class="hazard-rule mb-4"></div>
+            <p class="font-mono text-[10px] uppercase tracking-widest text-white/65">Built for the worksite · Yard Ledger</p>
+          </div>
+        </section>
+        <section class="flex flex-col justify-center p-6 sm:p-10">
+          <p class="font-mono text-[10px] uppercase tracking-[.2em] text-steel">Authorized yard staff</p>
+          <h2 class="mt-2 font-heading text-4xl font-bold uppercase tracking-wider">Sign in</h2>
+          <p class="mt-2 text-sm text-steel">Use the demo account to open the inventory desk.</p>
+          <form id="login-form" class="mt-7 space-y-5">
+            <label class="block"><span class="mb-1 block font-heading text-xs font-bold uppercase tracking-wider">Username</span><input name="username" autocomplete="username" required class="min-h-12 w-full border border-steel/60 bg-white px-3 text-sm" placeholder="Enter username"></label>
+            <label class="block"><span class="mb-1 block font-heading text-xs font-bold uppercase tracking-wider">Password</span><input name="password" type="password" autocomplete="current-password" required class="min-h-12 w-full border border-steel/60 bg-white px-3 text-sm" placeholder="Enter password"></label>
+            <p id="login-error" class="hidden border-l-4 border-rebar bg-rebar/10 px-3 py-2 text-sm text-rebar" role="alert"></p>
+            <button type="submit" class="min-h-12 w-full border border-asphalt bg-hazard px-5 font-heading text-base font-bold uppercase tracking-widest hover:bg-yellow-400">Enter the yard</button>
+          </form>
+          <div class="mt-6 border border-steel/40 bg-concrete/60 p-4">
+            <p class="font-heading text-xs font-bold uppercase tracking-wider">Demo sign-in</p>
+            <p id="demo-credentials" class="mt-2 font-mono text-xs text-asphalt"></p>
+            <p class="mt-2 text-[11px] leading-5 text-steel">Demo access only. This static app does not provide production-grade authentication.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div id="yard-app" class="hidden">
+  <div class="min-h-screen md:flex">
+    <aside id="sidebar" class="no-print fixed inset-y-0 left-0 z-30 hidden w-60 flex-col bg-asphalt text-concrete md:flex">
+      <a href="#dashboard" class="flex h-[84px] items-center gap-3 border-b border-white/15 px-5 no-underline">
+        <div class="grid h-11 w-11 place-items-center border-2 border-hazard text-hazard"><span class="font-heading text-2xl font-bold tracking-wider">YL</span></div>
+        <div class="brand-copy"><div class="font-heading text-2xl font-bold uppercase tracking-[.13em] text-white"></div><div class="font-mono text-[10px] uppercase tracking-[.2em] text-concrete/60">Supply yard · PH</div></div>
+      </a>
+      <div class="px-4 pt-6 font-heading text-xs font-bold uppercase tracking-[.2em] text-concrete/45">Yard operations</div>
+      <nav id="side-nav" class="mt-2 flex-1 space-y-1 px-2"></nav>
+      <div class="border-t border-white/15 p-4">
+        <button data-action="settings" class="flex min-h-11 w-full items-center gap-3 px-3 text-left text-sm text-concrete/80 hover:bg-white/10 hover:text-white"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-settings"/></svg><span class="settings-label">Settings &amp; data</span></button>
+        <button data-action="logout" class="flex min-h-11 w-full items-center gap-3 px-3 text-left text-sm text-concrete/80 hover:bg-white/10 hover:text-white"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-close"/></svg><span class="logout-label">Sign out</span></button>
+        <div class="mt-3 flex items-center justify-between border border-white/20 px-3 py-2">
+          <span class="font-heading text-xs font-bold uppercase tracking-widest text-concrete/75">Low stock</span>
+          <span id="low-counter" class="hazard-tag bg-hazard px-2 py-1 font-mono text-xs font-bold text-asphalt">0</span>
+        </div>
+      </div>
+    </aside>
+
+    <div id="workspace" class="min-w-0 flex-1 md:ml-60">
+      <header class="no-print sticky top-0 z-20 flex h-[68px] items-center gap-3 border-b border-steel/40 bg-concrete/95 px-4 backdrop-blur-sm sm:px-6 lg:px-8">
+        <button data-action="collapse-sidebar" class="hidden h-11 w-11 items-center justify-center border border-steel/50 md:flex" aria-label="Collapse sidebar"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-menu"/></svg></button>
+        <div class="relative min-w-0 max-w-2xl flex-1">
+          <svg class="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-steel" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-search"/></svg>
+          <input id="global-search" type="search" autocomplete="off" placeholder="Search SKU, item, supplier, bin…" class="h-11 w-full border border-steel/60 bg-white pl-10 pr-16 text-sm placeholder:text-steel focus:border-asphalt focus:outline-none">
+          <kbd class="absolute right-3 top-1/2 -translate-y-1/2 border border-steel/40 px-1.5 py-0.5 font-mono text-[10px] text-steel">/</kbd>
+          <div id="search-results" class="absolute left-0 right-0 top-full z-40 mt-1 hidden border border-asphalt bg-white shadow-yard"></div>
+        </div>
+        <button data-action="quick-move" class="flex h-11 shrink-0 items-center gap-2 bg-hazard px-3 font-heading text-sm font-bold uppercase tracking-wider hover:bg-yellow-400 sm:px-4"><svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-move"/></svg><span class="hidden sm:inline">Quick Move</span><span class="sm:hidden">Move</span><kbd class="hidden border border-asphalt/30 px-1 font-mono text-[10px] sm:inline">N</kbd></button>
+        <div id="current-date" class="hidden whitespace-nowrap border-l border-steel/40 pl-4 font-mono text-xs text-steel lg:block"></div>
+        <button data-action="shortcuts" title="Keyboard shortcuts" aria-label="Keyboard shortcuts" class="shortcut-toggle no-print hidden h-11 w-11 shrink-0 items-center justify-center border border-asphalt bg-white font-mono text-sm shadow-yard md:flex">?</button>
+      </header>
+      <main id="app" class="mx-auto max-w-yard px-4 pb-24 pt-6 sm:px-6 lg:px-8 md:pb-10"></main>
+    </div>
+  </div>
+  <nav id="mobile-nav" class="mobile-tabs no-print fixed inset-x-0 bottom-0 z-30 grid h-[68px] grid-cols-5 border-t border-asphalt bg-asphalt text-concrete md:hidden"></nav>
+  <div id="drawer-root"></div>
+  <div id="modal-root"></div>
+  <div id="toast-region" class="no-print fixed bottom-[82px] right-4 z-[70] flex w-[min(360px,calc(100vw-32px))] flex-col gap-2 md:bottom-4" aria-live="polite"></div>
+  <div id="shortcuts" class="no-print fixed right-4 top-[76px] z-40 hidden w-64 border border-asphalt bg-white p-4 shadow-yard">
+    <div class="mb-3 flex items-center justify-between"><h2 class="font-heading text-lg font-bold uppercase tracking-wider">Keyboard shortcuts</h2><button data-action="close-shortcuts" class="h-8 w-8" aria-label="Close shortcuts">×</button></div>
+    <p class="mb-2 flex justify-between text-sm"><span>Focus search</span><kbd class="border px-1.5 font-mono">/</kbd></p>
+    <p class="mb-2 flex justify-between text-sm"><span>Quick move</span><kbd class="border px-1.5 font-mono">N</kbd></p>
+    <p class="mb-3 flex justify-between text-sm"><span>Close panel</span><kbd class="border px-1.5 font-mono">Esc</kbd></p>
+    <button data-action="shortcuts" class="font-heading text-xs font-bold uppercase tracking-wider text-steel underline">Hide shortcuts</button>
+  </div>
+  </div>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

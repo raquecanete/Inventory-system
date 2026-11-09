@@ -1,0 +1,87 @@
+// Demo inventory for a Philippine construction supply yard.
+window.YARD_SEED = {
+  items: [
+    ["CEM-001", "Portland Cement 40kg", "Cement", "bag", "C1-01", 184, 240, 100, 265, "Luzon Cement Trading"],
+    ["CEM-002", "Masonry Cement 40kg", "Cement", "bag", "C1-02", 62, 160, 50, 238, "Luzon Cement Trading"],
+    ["CEM-003", "White Cement 40kg", "Cement", "bag", "C1-03", 24, 335, 20, 345, "Luzon Cement Trading"],
+    ["REB-001", "Deformed Bar 12mm x 6m", "Rebar", "pc", "R2-01", 86, 248, 50, 420, "Metro Steel Supply"],
+    ["REB-002", "Deformed Bar 10mm x 6m", "Rebar", "pc", "R2-02", 12, 179, 30, 336, "Metro Steel Supply"],
+    ["REB-003", "Deformed Bar 16mm x 6m", "Rebar", "pc", "R2-03", 45, 445, 30, 300, "Metro Steel Supply"],
+    ["REB-004", "GI Tie Wire #16 (25kg)", "Rebar", "kg", "R2-04", 5, 76, 8, 72, "Metro Steel Supply"],
+    ["LUM-001", "Coco Lumber 2x3x10 Bundle", "Lumber", "bundle", "L3-01", 7, 1_180, 6, 14, "Pioneer Lumber Depot"],
+    ["LUM-002", "Coco Lumber 2x2x10", "Lumber", "pc", "L3-02", 108, 92, 80, 125, "Pioneer Lumber Depot"],
+    ["LUM-003", "Good Lumber 2x3x12", "Lumber", "pc", "L3-03", 18, 245, 30, 110, "Pioneer Lumber Depot"],
+    ["PLY-001", "Marine Plywood 3/4", "Plywood", "sheet", "P4-01", 29, 1_180, 20, 82, "Pioneer Lumber Depot"],
+    ["PLY-002", "Ordinary Plywood 1/2", "Plywood", "sheet", "P4-02", 44, 690, 25, 65, "Pioneer Lumber Depot"],
+    ["PLY-003", "Phenolic Board 1/2", "Plywood", "sheet", "P4-03", 8, 1_050, 15, 64, "Pioneer Lumber Depot"],
+    ["PVC-001", "PVC Pipe 4in x 3m", "Pipes", "pc", "V5-01", 36, 485, 30, 92, "BuildRight Hardware Wholesale"],
+    ["PVC-002", "PVC Pipe 2in x 3m", "Pipes", "pc", "V5-02", 9, 198, 20, 76, "BuildRight Hardware Wholesale"],
+    ["PVC-003", "PVC Elbow 4in", "Pipes", "pc", "V5-03", 42, 75, 30, 58, "BuildRight Hardware Wholesale"],
+    ["PVC-004", "PPR Pipe 20mm", "Pipes", "m", "V5-04", 12, 36, 10, 35, "BuildRight Hardware Wholesale"],
+    ["ELE-001", "THHN Wire 3.5mm 75m", "Electrical", "roll", "E6-01", 16, 1_880, 20, 51, "BuildRight Hardware Wholesale"],
+    ["ELE-002", "THHN Wire 5.5mm 75m", "Electrical", "roll", "E6-02", 22, 2_950, 20, 28, "BuildRight Hardware Wholesale"],
+    ["ELE-003", "Duplex Outlet w/ Plate", "Electrical", "pc", "E6-03", 57, 118, 40, 60, "BuildRight Hardware Wholesale"],
+    ["ELE-004", "LED Bulb 9W Daylight", "Electrical", "pc", "E6-04", 0, 68, 20, 41, "BuildRight Hardware Wholesale"],
+    ["PNT-001", "Acrylic Latex White 4L", "Paint", "pc", "N7-01", 26, 890, 20, 62, "ColorPro Paint Center"],
+    ["PNT-002", "Flat Latex White 16L", "Paint", "pc", "N7-02", 13, 2_150, 20, 30, "ColorPro Paint Center"],
+    ["PNT-003", "Enamel Paint Gray 1L", "Paint", "pc", "N7-03", 31, 325, 15, 45, "ColorPro Paint Center"],
+    ["PNT-004", "Paint Thinner 4L", "Paint", "pc", "N7-04", 4, 540, 10, 25, "ColorPro Paint Center"],
+    ["TLS-001", "Claw Hammer 16oz", "Tools", "pc", "T8-01", 17, 385, 10, 30, "BuildRight Hardware Wholesale"],
+    ["TLS-002", "Shovel Round Point", "Tools", "pc", "T8-02", 8, 420, 12, 24, "BuildRight Hardware Wholesale"],
+    ["TLS-003", "Tape Measure 5m", "Tools", "pc", "T8-03", 39, 195, 20, 45, "BuildRight Hardware Wholesale"],
+    ["TLS-004", "Angle Grinder 4in", "Tools", "pc", "T8-04", 6, 2_450, 8, 16, "BuildRight Hardware Wholesale"],
+    ["FAS-001", "Common Wire Nail 2in", "Fasteners", "kg", "F9-01", 34, 88, 25, 50, "BuildRight Hardware Wholesale"],
+    ["FAS-002", "Concrete Nail 2in", "Fasteners", "kg", "F9-02", 11, 125, 8, 30, "BuildRight Hardware Wholesale"],
+    ["FAS-003", "Blind Rivet 1/8in (100pc)", "Fasteners", "box", "F9-03", 15, 145, 10, 35, "BuildRight Hardware Wholesale"],
+    ["FAS-004", "Hex Bolt & Nut 1/2in", "Fasteners", "pc", "F9-04", 3, 38, 8, 25, "BuildRight Hardware Wholesale"],
+    ["PPE-001", "Hard Hat Ratchet Type", "PPE", "pc", "S10-01", 21, 285, 15, 40, "BuildRight Hardware Wholesale"],
+    ["PPE-002", "Safety Gloves (pair)", "PPE", "pair", "S10-02", 48, 72, 20, 60, "BuildRight Hardware Wholesale"],
+    ["PPE-003", "Reflective Vest XL", "PPE", "pc", "S10-03", 7, 195, 10, 30, "BuildRight Hardware Wholesale"],
+    ["PPE-004", "Safety Goggles Clear", "PPE", "pc", "S10-04", 0, 95, 12, 25, "BuildRight Hardware Wholesale"],
+    ["REB-005", "Deformed Bar 20mm x 6m", "Rebar", "pc", "R2-05", 27, 695, 220, 205, "Metro Steel Supply"],
+    ["PVC-005", "PVC Solvent Cement 500ml", "Pipes", "pc", "V5-05", 19, 185, 24, 20, "BuildRight Hardware Wholesale"],
+    ["LUM-004", "Marine Plywood 1/2", "Plywood", "sheet", "P4-04", 15, 870, 60, 54, "Pioneer Lumber Depot"]
+  ].map(([sku, name, category, unit, bin, qty, cost, reorderPoint, maxStock, supplier]) => ({
+    sku, name, category, unit, bin, qty, cost, reorderPoint, maxStock, supplier,
+    updatedAt: new Date().toISOString()
+  })),
+  suppliers: [
+    { id: "SUP-01", name: "Luzon Cement Trading", contact: "Maribel Santos", phone: "0917 555 0142", email: "orders@luzoncement.ph", leadTime: 3, items: "Cement, masonry supplies" },
+    { id: "SUP-02", name: "Metro Steel Supply", contact: "Ramon Dela Cruz", phone: "0918 555 0178", email: "sales@metrosteel.ph", leadTime: 5, items: "Rebar, tie wire" },
+    { id: "SUP-03", name: "Pioneer Lumber Depot", contact: "Liza Mendoza", phone: "0920 555 0126", email: "pioneer@lumber.ph", leadTime: 4, items: "Lumber, plywood" },
+    { id: "SUP-04", name: "BuildRight Hardware Wholesale", contact: "Joel Reyes", phone: "0916 555 0194", email: "wholesale@buildright.ph", leadTime: 2, items: "Pipes, electrical, tools, fasteners, PPE" },
+    { id: "SUP-05", name: "ColorPro Paint Center", contact: "Ana Villanueva", phone: "0922 555 0133", email: "trade@colorpro.ph", leadTime: 3, items: "Paint and finishing supplies" }
+  ],
+  movements: [
+    ["IN","CEM-001",120,"PO-2026-014","Ben Santos","Cement delivery",13],
+    ["OUT","REB-002",18,"SITE-ALPHA","Marco Reyes","Foundation pour",12],
+    ["OUT","LUM-001",26,"SITE-BETA","Ben Santos","Roof framing",11],
+    ["IN","PVC-002",40,"PO-2026-013","Ana Cruz","Restock delivery",10],
+    ["OUT","ELE-004",6,"SITE-ALPHA","Marco Reyes","Temporary lighting",9],
+    ["ADJUST","TLS-002",-2,"COUNT-1106","Ana Cruz","Cycle count correction",8],
+    ["OUT","CEM-002",32,"SITE-GAMMA","Ben Santos","Block laying",7],
+    ["IN","REB-001",60,"PO-2026-012","Marco Reyes","Steel delivery",6],
+    ["OUT","PLY-003",12,"SITE-BETA","Ana Cruz","Formwork",5],
+    ["OUT","PPE-004",3,"SITE-GAMMA","Ben Santos","Crew issue",4],
+    ["IN","PNT-001",18,"PO-2026-011","Marco Reyes","Paint delivery",3],
+    ["OUT","FAS-004",8,"SITE-DELTA","Ana Cruz","Roof fasteners",2],
+    ["OUT","PVC-004",7,"SITE-ALPHA","Ben Santos","Plumbing rough-in",1],
+    ["IN","CEM-001",48,"PO-2026-014","Ana Cruz","Top-up delivery",0],
+    ["OUT","REB-002",9,"SITE-BETA","Marco Reyes","Beam reinforcement",0],
+    ["OUT","PPE-003",4,"SITE-GAMMA","Ben Santos","Safety gear issue",0],
+    ["IN","TLS-003",12,"PO-2026-015","Ana Cruz","Tool restock",0],
+    ["OUT","CEM-003",10,"SITE-DELTA","Marco Reyes","Finishing work",0],
+    ["ADJUST","LUM-003",-1,"COUNT-1109","Ben Santos","Damaged board",0],
+    ["OUT","ELE-001",5,"SITE-ALPHA","Ana Cruz","Site wiring",0]
+  ].map(([type, sku, qty, reference, staff, note, daysAgo], i) => ({
+    id: `MOV-${String(i + 1).padStart(4, "0")}`,
+    type, sku, qty, reference, staff, note,
+    date: new Date(Date.now() - daysAgo * 86400000 - (i % 5) * 3600000).toISOString()
+  })),
+  purchaseOrders: [
+    { id: "PO-2026-014", supplierId: "SUP-01", createdAt: new Date(Date.now() - 3 * 86400000).toISOString(), status: "Sent", lines: [{ sku: "CEM-001", qty: 120, received: 0, cost: 265 }, { sku: "CEM-003", qty: 30, received: 0, cost: 345 }], reference: "North Yard replenishment" },
+    { id: "PO-2026-013", supplierId: "SUP-04", createdAt: new Date(Date.now() - 6 * 86400000).toISOString(), status: "Partially Received", lines: [{ sku: "PVC-002", qty: 40, received: 20, cost: 198 }, { sku: "PVC-004", qty: 24, received: 0, cost: 145 }], reference: "Site plumbing stock" },
+    { id: "PO-2026-012", supplierId: "SUP-02", createdAt: new Date(Date.now() - 8 * 86400000).toISOString(), status: "Received", lines: [{ sku: "REB-001", qty: 60, received: 60, cost: 248 }, { sku: "REB-002", qty: 80, received: 80, cost: 179 }], reference: "Steel rack replenishment" }
+  ],
+  staff: ["Ana Cruz", "Ben Santos", "Marco Reyes"]
+};
